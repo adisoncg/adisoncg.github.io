@@ -1,0 +1,54 @@
+/* Alinhar o formulário verticalmente */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+    color: #000000;
+
+}
+
+/* Reduzir o espaço entre os elementos do formulário */
+.form-group {
+    margin-bottom: 100%;
+}
+
+body{
+    background-color: #ffffff;
+}
+
+body.background-login {
+    background-image: url('/static/usuarios/capa.png');
+    background-size: cover; /* Isso dimensionará a imagem para cobrir todo o fundo */
+    background-repeat: no-repeat; /* Isso impedirá que a imagem seja repetida */
+}
+
+.entrada-container {
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 15px; 
+    border-radius: 10px; 
+    margin: 50px auto 0; 
+    text-align: center;
+    color: #000000;
+    max-width: 300px; 
+    max-height: 500px;
+    
+}
+
+.resumo {
+    background-color: #545454;
+    color: #83a9e6;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 5px;
+    margin-top: 5px;
+}
+
+.valor {
+    background-color: #83a9e6;
+    color: #545454;
+    font-size: 17px;
+    font-weight: bold;
+    padding: 5px;
+}

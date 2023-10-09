@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+
+  <div class="container">
+    <br><br><br><br>
+    <div class="row align-items-center">
+        <div class="col-md-4">
+            <div class="resumo text-center">Despesa total:</div>
+            <div class="valor text-center">R$ {{ total_despesas|floatformat:2 }}</div>
+        </div>
+        <div class="col-md-4">
+            <div class="resumo text-center">Receita total:</div>
+            <div class="valor text-center">R$ {{ total_receitas|floatformat:2 }}</div>
+        </div>
+        <div class="col-md-4">
+            <div class="resumo text-center">Saldo Total:</div>
+            <div class="valor text-center">R$ {{ saldo|floatformat:2 }}</div>
+        </div>
+        <div class="col-md-4">
+          <br>
+            <canvas id="pieChart" width="200" height="200"></canvas>
+        </div>
+        <div class="col-md-2">
+            <canvas id="despesasChart" width="200" height="200"></canvas>
+        </div>
+        <div class="col-md-2">
+            <canvas id="receitasChart" width="200" height="200"></canvas>
+        </div>
+        <div class="col-md-2">
+            <canvas id="saldoChart" width="200" height="200"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+  // Gráfico de Despesas
+  var ctxDespesas = document.getElementById('despesasChart').getContext('2d');
+  var totalDespesas = {{ total_despesas|floatformat:2 }};
+
+  var dataDespesas = {
+      labels: ['Despesas'],
+      datasets: [{
+          label: 'Despesas',
+          data: [totalDespesas],
+          backgroundColor: ['#ff0000']  // Cor da barra de despesas
+      }]
+  };
+
+  var configDespesas = {
+      type: 'bar',
+      data: dataDespesas,
+      options: {
+          responsive: true,
+          scales: {
+              x: {
+                  beginAtZero: true
+              },
+              y: {
+                  beginAtZero: true
+              }
+          }
+      }
+  };
+
+  var myDespesasChart = new Chart(ctxDespesas, configDespesas);
+
+  // Gráfico de Receitas
+  var ctxReceitas = document.getElementById('receitasChart').getContext('2d');
+  var totalReceitas = {{ total_receitas|floatformat:2 }};
+
+  var dataReceitas = {
+      labels: ['Receitas'],
+      datasets: [{
+          label: 'Receitas',
+          data: [totalReceitas],
+          backgroundColor: ['#00ff00']  // Cor da barra de receitas
+      }]
+  };
+
+  var configReceitas = {
+      type: 'bar',
+      data: dataReceitas,
+      options: {
+          responsive: true,
+          scales: {
+              x: {
+                  beginAtZero: true
+              },
+              y: {
+                  beginAtZero: true
+              }
+          }
+      }
+  };
+
+  var myReceitasChart = new Chart(ctxReceitas, configReceitas);
+
+  // Gráfico de Saldo
+  var ctxSaldo = document.getElementById('saldoChart').getContext('2d');
+  var saldo = {{ saldo|floatformat:2 }};
+
+  var dataSaldo = {
+      labels: ['Saldo'],
+      datasets: [{
+          label: 'Saldo',
+          data: [saldo],
+          backgroundColor: ['#0000ff']  // Cor da barra de saldo
+      }]
+  };
+
+  var configSaldo = {
+      type: 'bar',
+      data: dataSaldo,
+      options: {
+          responsive: true,
+          scales: {
+              x: {
+                  beginAtZero: true
+              },
+              y: {
+                  beginAtZero: true
+              }
+          }
+      }
+  };
+
+  var mySaldoChart = new Chart(ctxSaldo, configSaldo);
+
+  // Gráfico de Pizza
+  var ctxPie = document.getElementById('pieChart').getContext('2d');
+  
+  var dataPie = {
+      labels: ['Despesas', 'Receitas', 'Saldo'],
+      datasets: [{
+          data: [totalDespesas, totalReceitas, saldo],
+          backgroundColor: ['#ff0000', '#00ff00', '#0000ff'],
+      }]
+  };
+
+  var configPie = {
+      type: 'pie',
+      data: dataPie,
+      options: {
+          responsive: true,
+      }
+  };
+
+  var pieChart = new Chart(ctxPie, configPie);
+</script>
+
+<nav class="navbar navbar-success bg-success fixed-top">
+    <div class="container-fluid">
+        <button class="text-light-emphasis bg-light-subtle border border-light-subtle rounded-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
+            <span class="navbar-toggler-light navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand text-center text-light mx-auto" href="{% url 'dashboard' %}">Dashboard</a>
+        <div div class="navbar-text text-light">
+          Seja bem-vindo, {{ first_name }}
+        </div>
+        <div class="offcanvas offcanvas-start text-bg-success" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">  
+          <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Navegação</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <li class="nav-item">
+                        <a class="nav-link active text-light" aria-current="page" href="{% url 'dashboard' %}">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle text-light" href="#" id="gerenciadorDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Gerenciador
+                      </a>
+                      <ul class="dropdown-menu bg-success" aria-labelledby="gerenciadorDropdown">
+                          <li><a class="dropdown-item text-light bg-success" href="{% url 'adicionar_despesa' %}">Adicionar Despesa</a></li>
+                          <li><a class="dropdown-item text-light bg-success" href="{% url 'adicionar_receita' %}">Adicionar Receita</a></li>
+                      </ul>
+                    </li>                  
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="{% url 'logout' %}">
+                        <span>Logout</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-open-fill" viewBox="0 0 16 16">
+                          <path d="M1.5 15a.5.5 0 0 0 0 1h13a.5.5 0 0 0 0-1H13V2.5A1.5 1.5 0 0 0 11.5 1H11V.5a.5.5 0 0 0-.57-.495l-7 1A.5.5 0 0 0 3 1.5V15H1.5zM11 2h.5a.5.5 0 0 1 .5.5V15h-1V2zm-2.5 8c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z"/>
+                        </svg>
+                    </a>
+                </br>          
+            </div>
+        </div>
+    </div>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>
