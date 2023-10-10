@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from .models import Receita, Despesa
 from .forms import ReceitaForm, DespesaForm
 from django.contrib.auth.decorators import login_required
+from django.db.models import Sum
 
 
 @login_required
@@ -26,6 +27,18 @@ def delete_receita(request, receita_id):
     return redirect('adicionar_receita')
 
 @login_required
+def calcular_porcentagem_categoria(usuario):
+    categorias = Despesa.objects.all()
+    porcentagens = {}
+    total_despesas = Despesa.objects.filter(usuario=usuario).aggregate(Sum('valor'))['valor__sum'] or 0
+
+    for categoria in categorias:
+        valor_categoria = Despesa.objects.filter(usuario=usuario, categoria=categoria).aggregate(Sum('valor'))['valor__sum'] or 0
+        porcentagem = (valor_categoria / total_despesas) * 100 if total_despesas > 0 else 0
+        porcentagens[categoria.nome] = round(porcentagem, 2)
+
+    return porcentagens
+
 def adicionar_despesa(request):
     if request.method == 'POST':
         form = DespesaForm(request.POST)
