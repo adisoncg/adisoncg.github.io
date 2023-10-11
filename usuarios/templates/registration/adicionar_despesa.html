@@ -3,27 +3,40 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Despesas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-</head>
+  </head>
+
+  <ul class="nav justify-content-end">
+    <button type="button" class="btn btn-primary rounded-circle" onclick="returnToDashboard()">Voltar</button>
+  </ul>
+<script>
+  function returnToDashboard() {
+    window.location.href = "{% url 'dashboard' %}";
+  }
+</script>
 
 <body>
   <div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <h2 class="text-center">Adicionar Despesas</h2>
-        <form method="post" class="text-center">
-          {% csrf_token %}
-          {{ form.as_p }}
-          <button type="submit" class="btn btn-primary btn-block">Adicionar</button><br><br>
-        </form>
-
-        <h2 class="text-center">Despesas</h2>
+    <div class="row justify-content-center ">
+      <div class="col-md-6"> 
+        <div class="container border bg-light border-succes rounded">
+          <h2 class="text-center">Adicione suas despesas</h2>
+          <form method="post" class="text-center">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary btn-block">Adicionar</button><br><br>
+          </form>
+        </div>
+        <br><br>
+        <h2 class="text-center">Tabela de despesas</h2>
         <table class="table container text-center">
-          <thead>
+        <thead>
             <tr>
               <th>Descrição</th>
               <th>Valor</th>
               <th>Data</th>
+              <th>Categoria</th>
               <th>Ação</th>
             </tr>
           </thead>
@@ -33,6 +46,7 @@
                 <td>{{ despesa.descricao }}</td>
                 <td>{{ despesa.valor }}</td>
                 <td>{{ despesa.data }}</td>
+                <td>{{despesa.categoria}}</td>
                 <td>    
                   <a href="{% url 'delete_despesa' despesa.id %}" class="btn btn-danger">Excluir</a>
                 </td>
@@ -44,6 +58,21 @@
             {% endfor %}
           </tbody>
         </table>
+        <div class="text-center">
+          <ul class="pagination">
+              {% if despesas.has_previous %}
+                  <li class="page-item"><a class="page-link" href="?page=1"><</a></li>
+                  <li class="page-item"><a class="page-link" href="?page={{ despesas.previous_page_number }}">></a></li>
+              {% endif %}
+      
+              <li class="page-item active"><span class="page-link">Página {{ despesas.number }} de {{ despesas.paginator.num_pages }}</span></li>
+      
+              {% if despesas.has_next %}
+                  <li class="page-item"><a class="page-link" href="?page={{ despesas.next_page_number }}"><</a></li>
+                  <li class="page-item"><a class="page-link" href="?page={{ despesas.paginator.num_pages }}">></a></li>
+              {% endif %}
+          </ul>
+        </div>
       </div>
     </div>
   </div>

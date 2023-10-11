@@ -6,28 +6,33 @@
     <title>Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
 <body>
 
-  <div class="container">
-    <br><br><br><br>
-    <div class="row align-items-center">
+    <div class="container">
+        <br><br><br><br>
+        <div class="row align-items-center p-3 mb-2 bg-light">
         <div class="col-md-4">
-            <div class="resumo text-center">Despesa total:</div>
+            <div class="resumo text-center"><strong>Despesa total:</strong></div>
             <div class="valor text-center">R$ {{ total_despesas|floatformat:2 }}</div>
         </div>
         <div class="col-md-4">
-            <div class="resumo text-center">Receita total:</div>
+            <div class="resumo text-center"><strong>Receita total:</strong></div>
             <div class="valor text-center">R$ {{ total_receitas|floatformat:2 }}</div>
         </div>
         <div class="col-md-4">
-            <div class="resumo text-center">Saldo Total:</div>
+            <div class="resumo text-center"><strong>Saldo Total:</strong></div>
             <div class="valor text-center">R$ {{ saldo|floatformat:2 }}</div>
         </div>
-        <div class="col-md-4">
-          <br>
-            <canvas id="pieChart" width="200" height="200"></canvas>
+        <!--Gráfico de pizza-->
+        <br><br><br><br>
+        <div class="col-md-4"> 
+            <div class="pie-chart-container">
+                <canvas id="pieChart" width="200" height="200"></canvas>
+            </div>
         </div>
+        <!--Gráficos de barra-->
         <div class="col-md-2">
             <canvas id="despesasChart" width="200" height="200"></canvas>
         </div>
@@ -50,7 +55,7 @@
       datasets: [{
           label: 'Despesas',
           data: [totalDespesas],
-          backgroundColor: ['#ff0000']  // Cor da barra de despesas
+          backgroundColor: ['#ff0000'] 
       }]
   };
 
@@ -81,7 +86,7 @@
       datasets: [{
           label: 'Receitas',
           data: [totalReceitas],
-          backgroundColor: ['#00ff00']  // Cor da barra de receitas
+          backgroundColor: ['#00ff00'] 
       }]
   };
 
@@ -136,12 +141,20 @@
 
   // Gráfico de Pizza
   var ctxPie = document.getElementById('pieChart').getContext('2d');
-  
+  var porcentagens = {
+    {% for categoria, porcentagem in porcentagens.items %}
+      "{{ categoria }}": {{ porcentagem|floatformat:0 }},
+    {% endfor %}
+  };
+
+  var labels = Object.keys(porcentagens);
+  var data = Object.values(porcentagens);
+
   var dataPie = {
-      labels: ['Despesas', 'Receitas', 'Saldo'],
+      labels: labels,
       datasets: [{
-          data: [totalDespesas, totalReceitas, saldo],
-          backgroundColor: ['#ff0000', '#00ff00', '#0000ff'],
+          data: data,
+          backgroundColor: ['#ff0000', '#00ff00', '#0000ff', '#8B4513', '#00ffff', '#ffff00', '#9900cc', '#FFA500'],
       }]
   };
 
@@ -173,24 +186,24 @@
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                     <li class="nav-item">
-                        <a class="nav-link active text-light" aria-current="page" href="{% url 'dashboard' %}">Home</a>
+                        <a class="nav-link active text-light" aria-current="page" href="{% url 'dashboard' %}"><i class="bi bi-house"></i> Home</a>
                     </li>
                     <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle text-light" href="#" id="gerenciadorDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                          Gerenciador
+                        <i class="bi bi-bar-chart"></i> Gerenciador
                       </a>
-                      <ul class="dropdown-menu bg-success" aria-labelledby="gerenciadorDropdown">
-                          <li><a class="dropdown-item text-light bg-success" href="{% url 'adicionar_despesa' %}">Adicionar Despesa</a></li>
-                          <li><a class="dropdown-item text-light bg-success" href="{% url 'adicionar_receita' %}">Adicionar Receita</a></li>
+                      <ul class="dropdown-menu bg-success border border-success" aria-labelledby="gerenciadorDropdown">
+                          <li><a class="dropdown-item text-light bg-success" href="{% url 'adicionar_despesa' %}"><i class="bi bi-wallet"></i> Adicionar Despesa</a></li>
+                          <li><a class="dropdown-item text-light bg-success" href="{% url 'adicionar_receita' %}"><i class="bi bi-cash-stack"></i> Adicionar Receita</a></li>
                       </ul>
+                      <li class="nav-item">
+                        <a class="nav-link active text-light" aria-current="page" href="#"><i class="bi bi-clipboard2-minus"></i></i> Metas</a>
+                    </li>
                     </li>                  
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-light" href="{% url 'logout' %}">
-                        <span>Logout</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-open-fill" viewBox="0 0 16 16">
-                          <path d="M1.5 15a.5.5 0 0 0 0 1h13a.5.5 0 0 0 0-1H13V2.5A1.5 1.5 0 0 0 11.5 1H11V.5a.5.5 0 0 0-.57-.495l-7 1A.5.5 0 0 0 3 1.5V15H1.5zM11 2h.5a.5.5 0 0 1 .5.5V15h-1V2zm-2.5 8c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z"/>
-                        </svg>
+                        <span><i class="bi bi-door-closed"></i> Logout</span>
                     </a>
                 </br>          
             </div>

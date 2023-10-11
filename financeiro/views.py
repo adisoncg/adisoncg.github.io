@@ -1,10 +1,9 @@
-# financeiro/views.py
 from django.shortcuts import render, redirect
 from .models import Receita, Despesa
 from .forms import ReceitaForm, DespesaForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 @login_required
 def adicionar_receita(request):
@@ -19,6 +18,16 @@ def adicionar_receita(request):
         form = ReceitaForm()
     
     receitas = Receita.objects.filter(usuario=request.user)
+
+    paginator = Paginator(receitas, 5) 
+    page = request.GET.get('page')
+
+    try:
+        receitas = paginator.page(page)
+    except PageNotAnInteger:
+        receitas = paginator.page(1)
+    except EmptyPage:
+        receitas = paginator.page(paginator.num_pages)
     return render(request, 'registration/adicionar_receita.html', {'form': form, 'receitas': receitas})
 
 def delete_receita(request, receita_id):
@@ -51,6 +60,17 @@ def adicionar_despesa(request):
         form = DespesaForm()
     
     despesas = Despesa.objects.filter(usuario=request.user)
+
+    paginator = Paginator(despesas, 5) 
+    page = request.GET.get('page')
+
+    try:
+        despesas = paginator.page(page)
+    except PageNotAnInteger:
+        despesas = paginator.page(1)
+    except EmptyPage:
+        despesas = paginator.page(paginator.num_pages)
+
     return render(request, 'registration/adicionar_despesa.html', {'form': form, 'despesas': despesas})
 
 def delete_despesa(request, despesa_id):
