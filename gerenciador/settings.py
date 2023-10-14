@@ -38,10 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'usuarios',
-    'financeiro'
+    'financeiro',
+    'metas',
+    'autenticacao'
 ]
 
-AUTH_USER_MODEL = 'usuarios.CustomUser'
+AUTH_USER_MODEL = 'autenticacao.CustomUser'
 
 LOGIN_REDIRECT_URL = 'dashboard'
 
