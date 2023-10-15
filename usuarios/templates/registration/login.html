@@ -8,12 +8,13 @@
     <title>Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{% static 'usuarios/custom.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'usuarios/icon_site.png' %}">
 </head>
 <body class="background-login">
     <div class="entrada-container"> 
         <div class="row justify-content-center">
             <div class="mb-3">
-                <h2 class="text-center mb-4">Login</h2>
+                <img src="{% static 'usuarios/icon_site.png' %}" alt="logo" class="img-fluid"> <br><br>
                 <form method="post">
                     {% csrf_token %}
                     <div class="mb-3">
@@ -23,8 +24,8 @@
                     <div class="mb-3">
                         <label for="password" class="form-label">Senha</label>
                         <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
-                        <button type="submit" class="btn btn-primary">Entrar</button>
+                    </div> <br>
+                    <button type="submit" class="btn" style="background-color: #3B3C49; color: white;">Entrar</button>
                 </form>
 
                 <p><br>Possui cadastro? <a href="{% url 'registro' %}"><br>Criar conta</a></p>

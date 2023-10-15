@@ -18,8 +18,9 @@ body{
 
 body.background-login {
     background-image: url('/static/usuarios/capa.png');
-    background-size: cover; /* Isso dimensionará a imagem para cobrir todo o fundo */
-    background-repeat: no-repeat; /* Isso impedirá que a imagem seja repetida */
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-position: center;
 }
 
 .entrada-container {
@@ -27,10 +28,26 @@ body.background-login {
     padding: 15px; 
     border-radius: 10px; 
     margin: 50px auto 0; 
+    margin-right: 150px;
     text-align: center;
-    color: #000000;
+    color: #3B3C49;
+    font-weight: bold;
     max-width: 300px; 
-    max-height: 500px;
+    max-height: 700px;
+    
+}
+
+.registro-container {
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 15px; 
+    border-radius: 10px; 
+    margin: 20px auto 0;
+    margin-right: 150px; 
+    text-align: center;
+    color: #3B3C49;
+    font-weight: bold;
+    max-width: 300px; 
+    max-height: 700px;
     
 }
 
@@ -50,3 +67,4 @@ body.background-login {
     font-weight: bold;
     padding: 5px;
 }
+

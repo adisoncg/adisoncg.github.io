@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="br">
 <head>
@@ -5,16 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Receitas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-</head>
+    <link rel="shortcut icon" type="image/png" href="{% static 'usuarios/icon_site.png' %}">
+  </head>
 
 <nav class="navbar bg-success">
   <div class="container-fluid">
     <a class="navbar-brand text-light" href="#">
-      <img src="" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-      Realzito
+      <img src="{% static "usuarios/logo_clara.png" %}" alt="Logo" width="100" height="24" class="d-inline-block align-text-top">
     </a>
     <ul class="nav justify-content-end bg-sucess rounded-circle">
-      <button type="button" class="btn text-light" onclick="returnToDashboard()">Voltar</button>
+      <button type="button" class="btn text-light"  onclick="returnToDashboard()">Voltar</button>
     </ul>
   <script>
     function returnToDashboard() {
@@ -28,11 +30,11 @@
   <div class="row justify-content-center">
     <div class="col-md-6">
       <div class="container border bg-light border-succes rounded">
-  <h2 class="text-center">Adicionar Receita</h2>
+  <h2 class="text-center">Adicione suas Receitas</h2><br>
   <form method="post" class="text-center">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="btn btn-primary btn-block">Adicionar</button><br><br>
+    <button type="submit" class="btn btn-block" style="background-color: #3B3C49; color: white;" >Adicionar</button><br><br>
   </form>
 </div>
 <br><br>
@@ -66,15 +68,15 @@
   <div class="text-center">
     <ul class="pagination">
         {% if receitas.has_previous %}
-            <li class="page-item"><a class="page-link" href="?page=1"><</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ receitas.previous_page_number }}">></a></li>
+            <li class="page-item"><a class="page-link" style="background-color: #3B3C49; color: white;" href="?page=1"><</a></li>
+            <li class="page-item"><a class="page-link" style="background-color: #3B3C49; color: white;" href="?page={{ receitas.previous_page_number }}">></a></li>
         {% endif %}
 
-        <li class="page-item active"><span class="page-link">Página {{ receitas.number }} de {{ receitas.paginator.num_pages }}</span></li>
+        <li class="page-item active"><span class="page-link" style="background-color: #3B3C49; color: white;">Página {{ receitas.number }} de {{ receitas.paginator.num_pages }}</span></li>
 
         {% if receitas.has_next %}
-            <li class="page-item"><a class="page-link" href="?page={{ receitas.next_page_number }}"><</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ receitas.paginator.num_pages }}">></a></li>
+            <li class="page-item"><a class="page-link" style="background-color: #3B3C49; color: white;" href="?page={{ receitas.next_page_number }}"><</a></li>
+            <li class="page-item"><a class="page-link" style="background-color: #3B3C49; color: white;" href="?page={{ receitas.paginator.num_pages }}">></a></li>
         {% endif %}
     </ul>
   </div>
