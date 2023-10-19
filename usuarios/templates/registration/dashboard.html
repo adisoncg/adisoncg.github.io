@@ -16,20 +16,36 @@
     <div class="container">
         <br><br><br><br>
         <div class="row align-items-center p-3 mb-2 bg-light">
-        <div class="col-md-4">
-            <div class="resumo text-center"><strong>Despesa total:</strong></div>
-            <div class="valor text-center">R$ {{ total_despesas|floatformat:2 }}</div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="resumo text-center"><strong>Despesa total:</strong></div>
+                        <div class="valor text-center">R$ {{ total_despesas|floatformat:2 }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="resumo text-center"><strong>Receita total:</strong></div>
+                        <div class="valor text-center">R$ {{ total_receitas|floatformat:2 }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="resumo text-center"><strong>Saldo Total:</strong></div>
+                        <div class="valor text-center" style="color: {% if saldo < 0 %}red{% else %}inherit{% endif %}; {% if saldo < 0 %} solid #ff5733;{% endif %}">
+                            R$ {{ saldo|floatformat:2 }}</div>
+                        
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4">
-            <div class="resumo text-center"><strong>Receita total:</strong></div>
-            <div class="valor text-center">R$ {{ total_receitas|floatformat:2 }}</div>
-        </div>
-        <div class="col-md-4">
-            <div class="resumo text-center"><strong>Saldo Total:</strong></div>
-            <div class="valor text-center">R$ {{ saldo|floatformat:2 }}</div>
-        </div>
+    </div>
+    
         <!--Gráfico de pizza-->
-        <br><br><br><br>
         <div class="col-md-4"> 
             <div class="pie-chart-container">
                 <canvas id="pieChart" width="200" height="200"></canvas>
@@ -45,131 +61,151 @@
         <div class="col-md-2">
             <canvas id="saldoChart" width="200" height="200"></canvas>
         </div>
-    </div>
-</div>
+   
 
 <script>
-  // Gráfico de Despesas
-  var ctxDespesas = document.getElementById('despesasChart').getContext('2d');
-  var totalDespesas = {{ total_despesas|floatformat:2 }};
+   // Gráfico de Despesas
+      var ctxDespesas = document.getElementById('despesasChart').getContext('2d');
+      var totalDespesas = {{ total_despesas|floatformat:2 }};
 
-  var dataDespesas = {
-      labels: ['Despesas'],
-      datasets: [{
-          label: 'Despesas',
-          data: [totalDespesas],
-          backgroundColor: ['#ff0000'] 
-      }]
-  };
+      var dataDespesas = {
+          labels: ['Despesas'],
+          datasets: [{
+              label: 'Despesas',
+              data: [totalDespesas],
+              backgroundColor: ['#ff5733']  
+          }]
+      };
 
-  var configDespesas = {
-      type: 'bar',
-      data: dataDespesas,
-      options: {
-          responsive: true,
-          scales: {
-              x: {
-                  beginAtZero: true
-              },
-              y: {
-                  beginAtZero: true
+      var configDespesas = {
+          type: 'bar',
+          data: dataDespesas,
+          options: {
+              responsive: true,
+              scales: {
+                  x: {
+                      beginAtZero: true
+                  },
+                  y: {
+                      beginAtZero: true
+                  }
               }
           }
-      }
-  };
+      };
 
-  var myDespesasChart = new Chart(ctxDespesas, configDespesas);
+      var myDespesasChart = new Chart(ctxDespesas, configDespesas);
 
-  // Gráfico de Receitas
-  var ctxReceitas = document.getElementById('receitasChart').getContext('2d');
-  var totalReceitas = {{ total_receitas|floatformat:2 }};
+      // Gráfico de Receitas
+      var ctxReceitas = document.getElementById('receitasChart').getContext('2d');
+      var totalReceitas = {{ total_receitas|floatformat:2 }};
 
-  var dataReceitas = {
-      labels: ['Receitas'],
-      datasets: [{
-          label: 'Receitas',
-          data: [totalReceitas],
-          backgroundColor: ['#00ff00'] 
-      }]
-  };
+      var dataReceitas = {
+          labels: ['Receitas'],
+          datasets: [{
+              label: 'Receitas',
+              data: [totalReceitas],
+              backgroundColor: ['#33ff57']
+          }]
+      };
 
-  var configReceitas = {
-      type: 'bar',
-      data: dataReceitas,
-      options: {
-          responsive: true,
-          scales: {
-              x: {
-                  beginAtZero: true
-              },
-              y: {
-                  beginAtZero: true
+      var configReceitas = {
+          type: 'bar',
+          data: dataReceitas,
+          options: {
+              responsive: true,
+              scales: {
+                  x: {
+                      beginAtZero: true
+                  },
+                  y: {
+                      beginAtZero: true
+                  }
               }
           }
-      }
-  };
+      };
 
-  var myReceitasChart = new Chart(ctxReceitas, configReceitas);
+      var myReceitasChart = new Chart(ctxReceitas, configReceitas);
 
-  // Gráfico de Saldo
-  var ctxSaldo = document.getElementById('saldoChart').getContext('2d');
-  var saldo = {{ saldo|floatformat:2 }};
+ // Gráfico de Saldo
+var ctxSaldo = document.getElementById('saldoChart').getContext('2d');
+var saldo = {{ saldo|floatformat:2 }};
 
-  var dataSaldo = {
-      labels: ['Saldo'],
-      datasets: [{
-          label: 'Saldo',
-          data: [saldo],
-          backgroundColor: ['#0000ff']  // Cor da barra de saldo
-      }]
-  };
+var dataSaldo = {
+    labels: ['Saldo'],
+    datasets: [{
+        label: 'Saldo',
+        data: [saldo >= 0 ? saldo : 0],
+        backgroundColor: ['#3366ff']  
+    }]
+};
 
-  var configSaldo = {
-      type: 'bar',
-      data: dataSaldo,
-      options: {
-          responsive: true,
-          scales: {
-              x: {
-                  beginAtZero: true
-              },
-              y: {
-                  beginAtZero: true
-              }
-          }
-      }
-  };
+var configSaldo = {
+    type: 'bar',
+    data: dataSaldo,
+    options: {
+        responsive: true,
+        scales: {
+            x: {
+                beginAtZero: true
+            },
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+};
 
-  var mySaldoChart = new Chart(ctxSaldo, configSaldo);
+var mySaldoChart = new Chart(ctxSaldo, configSaldo);
+
 
   // Gráfico de Pizza
   var ctxPie = document.getElementById('pieChart').getContext('2d');
+
   var porcentagens = {
     {% for categoria, porcentagem in porcentagens.items %}
       "{{ categoria }}": {{ porcentagem|floatformat:0 }},
     {% endfor %}
   };
-
+  
   var labels = Object.keys(porcentagens);
   var data = Object.values(porcentagens);
-
+  
+  var backgroundColors = [
+    'rgb(255, 99, 132)',
+    'rgb(54, 162, 235)',
+    'rgb(75,0,130)',
+    'rgb(220,220,220)',
+    'rgb(0,255,127)',
+    'rgb(238,232,170)',
+    'rgb(128,0,0)',
+    'rgb(255,140,0)'
+  ];
+  
   var dataPie = {
-      labels: labels,
-      datasets: [{
-          data: data,
-          backgroundColor: ['#ff0000', '#00ff00', '#0000ff', '#8B4513', '#00ffff', '#ffff00', '#9900cc', '#FFA500'],
-      }]
+    labels: labels,
+    datasets: [{
+      label: '%',
+      data: data,
+      backgroundColor: backgroundColors,
+      hoverOffset: 4
+    }]
   };
-
+  
   var configPie = {
-      type: 'pie',
-      data: dataPie,
-      options: {
-          responsive: true,
-      }
+    type: 'doughnut', 
+    data: dataPie,
+    options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'left' // Isso moverá as labels para a parte inferior do gráfico
+          }
+        }
+      }      
   };
-
+  
   var pieChart = new Chart(ctxPie, configPie);
+
 </script>
 
 <nav class="navbar navbar-success bg-success fixed-top">
