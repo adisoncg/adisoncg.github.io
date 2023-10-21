@@ -45,117 +45,80 @@
         </div>
     </div>
     
-        <!--Gráfico de pizza-->
-        <div class="col-md-4"> 
+    <br><br>
+        <!--Gráficos de barra-->
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <canvas id="combinedChart" width="500" height="300"></canvas> <!-- Adicione este elemento -->
+        </div>   
+         <!--Gráfico de pizza-->
+         <div class="col-md-4"> 
             <div class="pie-chart-container">
                 <canvas id="pieChart" width="200" height="200"></canvas>
             </div>
         </div>
-        <!--Gráficos de barra-->
-        <div class="col-md-2">
-            <canvas id="despesasChart" width="200" height="200"></canvas>
-        </div>
-        <div class="col-md-2">
-            <canvas id="receitasChart" width="200" height="200"></canvas>
-        </div>
-        <div class="col-md-2">
-            <canvas id="saldoChart" width="200" height="200"></canvas>
-        </div>
+    </div> 
+    </div>    
+   
+      
    
 
 <script>
    // Gráfico de Despesas
-      var ctxDespesas = document.getElementById('despesasChart').getContext('2d');
-      var totalDespesas = {{ total_despesas|floatformat:2 }};
+   var ctxCombined = document.getElementById('combinedChart').getContext('2d');
+   var totalDespesas = {{ total_despesas|floatformat:2 }};
+   var totalReceitas = {{ total_receitas|floatformat:2 }};
+   var saldo = {{ saldo|floatformat:2 }};
+   
+   var dataCombined = {
+       labels: ['Despesas', 'Receitas', 'Saldo'],
+       datasets: [{
+           label: 'Representação gráfica',
+           data: [totalDespesas, totalReceitas, saldo],
+           backgroundColor: [
+               'rgb(128,0,0)',  // Cor das Despesas
+               'rgb(0,255,127)',  // Cor das Receitas
+               saldo < 0 ? 'rgba(255, 0, 0)' : 'rgb(54, 162, 235)'  // Cor do Saldo (vermelho se negativo, azul se positivo)
+           ],
+           borderColor: [
+               'rgb(128,0,0)',  // Cor das Despesas
+               'rgb(0,255,127)',  // Cor das Receitas
+               saldo < 0 ? 'rgb(255, 0, 0)' : 'rgb(54, 162, 235)'  // Cor do Saldo (vermelho se negativo, azul se positivo)
+           ],
+           borderWidth: 1
+       }]
+   };
+   
+   var configCombined = {
+       type: 'bar',
+       data: dataCombined,
+       options: {
+           responsive: true,
+           scales: {
+               x: {
+                   beginAtZero: true
+               },
+               y: {
+                   beginAtZero: true
+               }
+   },
 
-      var dataDespesas = {
-          labels: ['Despesas'],
-          datasets: [{
-              label: 'Despesas',
-              data: [totalDespesas],
-              backgroundColor: ['#ff5733']  
-          }]
-      };
-
-      var configDespesas = {
-          type: 'bar',
-          data: dataDespesas,
-          options: {
-              responsive: true,
-              scales: {
-                  x: {
-                      beginAtZero: true
-                  },
-                  y: {
-                      beginAtZero: true
-                  }
-              }
-          }
-      };
-
-      var myDespesasChart = new Chart(ctxDespesas, configDespesas);
-
-      // Gráfico de Receitas
-      var ctxReceitas = document.getElementById('receitasChart').getContext('2d');
-      var totalReceitas = {{ total_receitas|floatformat:2 }};
-
-      var dataReceitas = {
-          labels: ['Receitas'],
-          datasets: [{
-              label: 'Receitas',
-              data: [totalReceitas],
-              backgroundColor: ['#33ff57']
-          }]
-      };
-
-      var configReceitas = {
-          type: 'bar',
-          data: dataReceitas,
-          options: {
-              responsive: true,
-              scales: {
-                  x: {
-                      beginAtZero: true
-                  },
-                  y: {
-                      beginAtZero: true
-                  }
-              }
-          }
-      };
-
-      var myReceitasChart = new Chart(ctxReceitas, configReceitas);
-
- // Gráfico de Saldo
-var ctxSaldo = document.getElementById('saldoChart').getContext('2d');
-var saldo = {{ saldo|floatformat:2 }};
-
-var dataSaldo = {
-    labels: ['Saldo'],
-    datasets: [{
-        label: 'Saldo',
-        data: [saldo >= 0 ? saldo : 0],
-        backgroundColor: ['#3366ff']  
-    }]
-};
-
-var configSaldo = {
-    type: 'bar',
-    data: dataSaldo,
-    options: {
-        responsive: true,
-        scales: {
-            x: {
-                beginAtZero: true
+     plugins: {
+            legend: {
+                display: false, // Ocultar a legenda
             },
-            y: {
-                beginAtZero: true
-            }
-        }
+        },
+        datasets: {
+            bar: {
+                categoryPercentage: 0.6, // Ajuste a largura das barras
+                barPercentage: 1.0,
+            },
+        },
     }
 };
-
-var mySaldoChart = new Chart(ctxSaldo, configSaldo);
+   
+   var combinedChart = new Chart(ctxCombined, configCombined);
+   
 
 
   // Gráfico de Pizza
@@ -208,18 +171,15 @@ var mySaldoChart = new Chart(ctxSaldo, configSaldo);
 
 </script>
 
-<nav class="navbar navbar-success bg-success fixed-top">
+<nav class="navbar fixed-top" style="background: linear-gradient(to right, #3B3C49, #55964A);">
     <div class="container-fluid">
         <button class="text-light-emphasis bg-light-subtle border border-light-subtle rounded-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
-            <span class="navbar-toggler-light navbar-toggler-icon"></span>
+            <span class="navbar-toggler-light navbar-toggler-icon" ></span>
         </button>
         <a class="navbar-brand text-center text-light mx-auto" href="{% url 'dashboard' %}">Dashboard</a>
-        <div div class="navbar-text text-light">
-          Seja bem-vindo, {{ first_name }}
-        </div>
-        <div class="offcanvas offcanvas-start text-bg-success" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">  
+        <div class="offcanvas offcanvas-start" style="background: linear-gradient(to right, #3B3C49, #55964A);" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">  
           <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Navegação</h5>
+                <h5 class="offcanvas-title text-light" id="offcanvasDarkNavbarLabel">Navegação</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
@@ -231,9 +191,9 @@ var mySaldoChart = new Chart(ctxSaldo, configSaldo);
                       <a class="nav-link dropdown-toggle text-light" href="#" id="gerenciadorDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-bar-chart"></i> Gerenciador
                       </a>
-                      <ul class="dropdown-menu bg-success border border-success" aria-labelledby="gerenciadorDropdown">
-                          <li><a class="dropdown-item text-light bg-success" href="{% url 'adicionar_despesa' %}"><i class="bi bi-wallet"></i> Adicionar Despesa</a></li>
-                          <li><a class="dropdown-item text-light bg-success" href="{% url 'adicionar_receita' %}"><i class="bi bi-cash-stack"></i> Adicionar Receita</a></li>
+                      <ul class="dropdown-menu" style="background: linear-gradient(to right, #3B3C49, #55964A);" aria-labelledby="gerenciadorDropdown">
+                          <li><a class="dropdown-item text-light" style="background: linear-gradient(to right, #3B3C49, #55964A);" href="{% url 'adicionar_despesa' %}"><i class="bi bi-wallet"></i> Adicionar Despesa</a></li>
+                          <li><a class="dropdown-item text-light" style="background: linear-gradient(to right, #3B3C49, #55964A);" href="{% url 'adicionar_receita' %}"><i class="bi bi-cash-stack"></i> Adicionar Receita</a></li>
                       </ul>
                       <li class="nav-item">
                         <a class="nav-link active text-light" aria-current="page" href="{% url 'metas' %}"><i class="bi bi-clipboard2-minus"></i></i> Metas</a>
