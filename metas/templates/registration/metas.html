@@ -26,7 +26,7 @@
   </div>
 </nav>
 
-  <body>
+  <body class="text-center">
     
     <h2>Metas Financeiras</h2>
     
@@ -35,8 +35,9 @@
         {{ form.as_p }}
         <button type="submit">Adicionar Meta</button>
     </form>
+    <br>
     
-    <ul>
+    <ul class="list-unstyled">
         {% for meta in metas %}
         <li>
             <h3>{{ meta.nome }}</h3>
