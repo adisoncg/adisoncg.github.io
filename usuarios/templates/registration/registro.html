@@ -31,6 +31,7 @@
             <div class="mb-3">
                 <label for="password1" class="form-label">Senha</label>
                 <input type="password" class="form-control" id="password1" name="password1" required>
+                <span id="password-hint" class="form-text text-muted">(Deve conter pelo menos 8 caracteres)</span>
             </div>
             <div class="mb-3">
                 <label for="password2" class="form-label">Confirme a Senha</label>
@@ -41,5 +42,20 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script>
+        const password1Input = document.getElementById('password1');
+        const passwordHint = document.getElementById('password-hint');
+    
+        password1Input.addEventListener('input', function () {
+            const password = password1Input.value;
+    
+            if (password.length < 8) {
+                passwordHint.textContent = '(Deve conter pelo menos 8 caracteres)';
+            } else {
+                passwordHint.textContent = '';
+            }
+        });
+    </script>
+    
 </body>
 </html>
