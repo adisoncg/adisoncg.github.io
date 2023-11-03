@@ -69,7 +69,12 @@
    var totalDespesas = {{ total_despesas|floatformat:2 }};
    var totalReceitas = {{ total_receitas|floatformat:2 }};
    var saldo = {{ saldo|floatformat:2 }};
-   
+   var saldoMinimo = 0;
+
+   if (saldo < saldoMinimo) {
+    saldo = saldoMinimo;
+  }
+  
    var dataCombined = {
        labels: ['Despesas', 'Receitas', 'Saldo'],
        datasets: [{

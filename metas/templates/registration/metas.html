@@ -27,13 +27,13 @@
 </nav>
 
   <body class="text-center">
-    
+    <br>
     <h2>Metas Financeiras</h2>
     
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Adicionar Meta</button>
+        <button type="submit" class="btn btn-block" style="background-color: #3B3C49; color: white;">Adicionar Meta</button>
     </form>
     <br>
     
