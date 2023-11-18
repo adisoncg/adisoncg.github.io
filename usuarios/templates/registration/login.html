@@ -18,25 +18,26 @@
                 <img src="{% static 'usuarios/icon_site.png' %}" alt="logo" class="img-fluid"> <br><br>
                 <form method="post">
                     {% csrf_token %}
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="bi bi-envelope"></i></span> 
-                            <input type="email" class="form-control" id="email" name="email" required>
-                        </div>
+                    <div class="mb-4">
+                        <label for="id_username" style="display: block;">Email</label>
+                        <div class="input-group justify-content-center">
+                        <span class="input-group-text"><i class="bi bi-envelope"></i></span> 
+                        {{ form.username }}
                     </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Senha</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="bi bi-key"></i></span> <!-- Ícone de senha -->
-                            <input type="password" class="form-control" id="password" name="password" required>
-                        </div>
+                    <br>
+                    <div class="mb-4">
+                        <label for="id_password" style="display: block;">Senha</label>
+                        <div class="input-group justify-content-center">
+                        <span class="input-group-text"><i class="bi bi-key"></i></span> 
+                        {{ form.password }}
                     </div>
                      <br>
                     <button type="submit" class="btn" style="background-color: #3B3C49; color: white;">Entrar</button>
                 </form>
 
                 <p><br>Possui cadastro? <a href="{% url 'registro' %}"><br>Criar conta</a></p>
+
+                <br>
 
             </div>
         </div>

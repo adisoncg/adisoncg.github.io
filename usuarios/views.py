@@ -24,7 +24,7 @@ def calcular_saldo(request):
 from django.shortcuts import render
 from financeiro.models import Despesa
 from django.contrib.auth.decorators import login_required
-from django.db import models  # Certifique-se de importar models do Django
+from django.db import models 
 
 @login_required
 def dashboard(request):

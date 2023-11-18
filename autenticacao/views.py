@@ -16,16 +16,21 @@ def register(request):
 
 def user_login(request):
     if request.method == 'POST':
-        form = CustomAuthenticationForm(data=request.POST)
+        form = CustomAuthenticationForm(request.POST)
         if form.is_valid():
-            user = authenticate(request, username=form.cleaned_data['email'], password=form.cleaned_data['password'])
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            user = authenticate(request, email=email, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('dashboard') 
+                return redirect('dashboard')
+            else:
+                messages.error(request, 'Erro de autenticação. Verifique suas credenciais.')
         else:
-            messages.error(request, 'Erro de autenticação. Verifique suas credenciais.')
+            messages.error(request, 'Erro no formulário. Verifique os campos.')
     else:
         form = CustomAuthenticationForm()
+
     return render(request, 'registration/login.html', {'form': form})
 
 def user_logout(request):
