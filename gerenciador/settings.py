@@ -132,10 +132,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = BASE_DIR / 'usuarios' / 'static'
+STATIC_ROOT = BASE_DIR / 'usuarios/static/'
 
 STATICFILES_DIRS = [
-    ('usuarios', BASE_DIR / 'usuarios' / 'static'),
+    ('usuarios', '/usuarios/static/'),
 ]
 
 # Default primary key field type
