@@ -135,7 +135,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static/'
 
 STATICFILES_DIRS = [
-    ('usuarios', BASE_DIR / 'usuarios' / 'static' / 'usuarios'),
+    ('usuarios', BASE_DIR / 'static' / 'usuarios'),
 ]
 
 
