@@ -135,7 +135,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'usuarios/static/'
 
 STATICFILES_DIRS = [
-    ('usuarios', '/usuarios/static/'),
+    ('usuarios', '/usuarios/static/usuarios/'),
 ]
 
 # Default primary key field type
