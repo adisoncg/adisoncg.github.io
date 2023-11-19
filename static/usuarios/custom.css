@@ -1,0 +1,78 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+    color: #000000;
+
+}
+
+.form-group {
+    margin-bottom: 100%;
+}
+
+body{
+    background-color: #000000;
+}
+
+body.background-login {
+    background-image: url('/static/usuarios/image.png');
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-position: center;
+}
+
+body.background-registro {
+    background-image: url('/static/usuarios/image.png');
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-position: center;
+}
+
+
+.entrada-container {
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 15px; 
+    border-radius: 10px; 
+    margin: 110px auto 0; 
+    margin-right: 150px;
+    text-align: center;
+    color: #3B3C49;
+    font-weight: bold;
+    max-width: 300px; 
+    max-height: 700px;
+    
+}
+
+.registro-container {
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 15px; 
+    border-radius: 10px; 
+    margin: 20px auto 0;
+    margin-right: 150px; 
+    text-align: center;
+    color: #3B3C49;
+    font-weight: bold;
+    max-width: 300px; 
+    max-height: 700px;
+    
+}
+
+.resumo {
+    background-color: #545454;
+    color: #83a9e6;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 5px;
+    margin-top: 5px;
+}
+
+.valor {
+    background-color: #83a9e6;
+    color: #545454;
+    font-size: 17px;
+    font-weight: bold;
+    padding: 5px;
+}
+

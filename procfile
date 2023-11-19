@@ -1,0 +1,1 @@
+web: gunicon gerenciador.wsgi --log-file - 
