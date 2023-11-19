@@ -3,6 +3,7 @@ contourpy==1.1.1
 cycler==0.12.1
 Django==4.2.5
 fonttools==4.43.1
+gunicorn==21.2.0
 kiwisolver==1.4.5
 matplotlib==3.8.0
 numpy==1.26.0
