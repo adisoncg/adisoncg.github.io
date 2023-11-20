@@ -133,10 +133,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = BASE_DIR / 'gerenciador/staticfile/'
+STATIC_ROOT = BASE_DIR / 'gerenciador/static/'
 
 STATICFILES_DIRS = [
-    
+
     ]
 
 
